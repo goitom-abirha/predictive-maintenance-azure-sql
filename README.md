@@ -1,5 +1,10 @@
-# predictive-maintenance-azure-sql
-Predictive Maintenance ML project (Completed Jan–Mar 2023) using simulated IoT data, Python, and Azure SQL.
+# Predictive Maintenance using Python, Azure SQL & Power BI  
+**Completed Jan–Mar 2023** | Simulated IoT data, Machine Learning, Cloud SQL, and Interactive Dashboards
+
+This project builds a complete predictive maintenance pipeline using:  
+**Python → Azure SQL → Machine Learning → Power BI Dashboards.**
+
+The goal is to predict equipment failures **72 hours in advance** using sensor data.
 
 ---
 
@@ -15,83 +20,125 @@ Predictive Maintenance ML project (Completed Jan–Mar 2023) using simulated IoT
 
 ---
 
-## Repository Structure (Planned)
+## Repository Structure
 
-docs/ → Project proposal, project plan, diagrams
-data/ → Simulated IoT sensor data (later)
-notebooks/ → Jupyter notebooks (simulation, features, modeling)
-src/ → Python scripts (data simulation, features, training)
-sql/ → SQL schema + queries
-figures/ → EDA plots + evaluation charts
-models/ → Saved ML model (.pkl)
+docs/ → Project proposal, project plan, documentation
+data/ → Simulated IoT sensor data
+notebooks/ → Jupyter notebooks (Week 1–5 pipeline)
+src/ → Python scripts (simulation, features, training)
+sql/ → SQL schema & queries
+figures/ → Dashboard screenshots & visual outputs
+models/ → Saved trained ML model (.pkl)
+dashboards/ → Power BI files (.pbix)
+
+
+---
 
 ## 4. Model Performance
 
-The goal of the model is to predict whether a machine will experience a failure
-within the next 72 hours (`failure_within_72h = 1`) using engineered sensor
-features.
+Goal: predict whether a machine will fail within the next **72 hours** (`failure_within_72h = 1`).
 
-### 4.1 Model Comparison
+### **4.1 Model Comparison**
 
-The following models were trained and evaluated on a held-out test set:
+| Model               | Accuracy | Precision | Recall | F1-score | ROC–AUC |
+|---------------------|----------|-----------|--------|----------|---------|
+| Logistic Regression | 0.991    | 0.932     | 0.987  | 0.959    | **0.999** |
+| Gradient Boosting   | 0.996    | 0.993     | 0.967  | 0.980    | 0.999   |
+| Random Forest       | 0.996    | 1.000     | 0.959  | 0.979    | 0.998   |
 
-| Model           | Accuracy | Precision | Recall | F1-score | ROC–AUC |
-|-----------------|----------|-----------|--------|----------|---------|
-| Logistic Regression | 0.991 | 0.932 | 0.987 | 0.959 | **0.999** |
-| Gradient Boosting   | 0.996 | 0.993 | 0.967 | 0.980 | 0.999 |
-| Random Forest       | 0.996 | 1.000 | 0.959 | 0.979 | 0.998 |
+> **Logistic Regression** was selected as the primary model due to its high ROC–AUC, fast runtime, and interpretability.
 
-> **Note:** All models perform extremely well on this synthetic IoT dataset.  
-> Logistic Regression was selected as the **primary model** because it achieves
-> the highest ROC–AUC while remaining simple, fast, and easy to interpret.
+### **4.2 Saved Artifacts**
+- Best model: `models/best_model.pkl`
+- Metrics log: `models/model_metrics.json`
 
-- **Accuracy** ≈ 99% → the model correctly classifies almost all hourly readings.  
-- **Precision** (LogReg ≈ 0.93) → when the model predicts an upcoming failure, it is correct ~93% of the time.  
-- **Recall** (LogReg ≈ 0.99) → the model detects almost all true upcoming failures.  
-- **ROC–AUC** (LogReg ≈ 0.999) → the model has excellent ranking ability in distinguishing risky vs. healthy machine states.
-
-### 4.2 Selected Model
-
-- **Chosen model:** Logistic Regression (with StandardScaler and class_weight="balanced")  
-- **Saved artifact:** `models/best_model.pkl`  
-- **Metrics log:** `models/model_metrics.json` (contains all model scores)
-
-These artifacts will be used in Week 4 for integration with Azure SQL
-and optional deployment steps (API or dashboard).
+---
 
 ## 5. Azure SQL Integration (Week 4)
 
-Week 4 focused on deploying the engineered dataset to **Azure SQL Database** and establishing
-a cloud-based data pipeline.
+Week 4 deployed the engineered dataset to **Azure SQL Database**.
 
-### Key actions:
-- Configured Azure SQL server (`goitom-pm-sqlserver`) on East US 2
-- Created database `predictive_maintenance_db`
-- Enabled public endpoint & firewall to allow secure access
-- Created SQL table `SensorFeatures`
-- Wrote ingestion script using `pyodbc` and secure password handling
-- Inserted all engineered features into Azure SQL
+### **Key Actions**
+- Created Azure SQL server: `goitom-pm-sqlserver`
+- Created DB: `predictive_maintenance_db`
+- Allowed secure access via firewall + SQL authentication
+- Created `SensorFeatures` table
+- Implemented secure ingestion with `pyodbc` + environment variables
 - Verified rows using Azure Query Editor
 
 Notebook:  
-`notebooks/04_azure_sql_ingestion.ipynb`
+`notebooks/04_azure_sql_integration.ipynb`
 
-## 6. Power BI Dashboard (Week 5)
+---
 
-In Week 5, the project connects live Azure SQL data to Power BI to build an
-interactive predictive maintenance dashboard.
+## 6. Power BI Dashboards (Week 5)
 
-### Key visuals:
-- KPI Cards:
-  - Machines monitored
-  - Predicted failures (next 72 hours)
-  - Failure rate (%)
-- Bar chart: failures by machine
-- Line chart: sensor trends over time
-- Slicers: machine, day of week, hour of day
+Week 5 connected Azure SQL → Power BI using **DirectQuery** to build live dashboards.
 
-Power BI File:
-`powerbi/predictive_maintenance_dashboard.pbix`
+### **Page 1 – Predictive Maintenance (Executive KPI Dashboard)**  
+Includes:
+- Total Sensor Readings  
+- Failures Detected  
+- Model Accuracy  
+- Precision  
+- Recall  
+- Machine ID Slicer  
+- Failure Trend over Time  
 
-This dashboard allows maintenance teams to monitor risk levels, view real-time
-sensor behavior, and prioritize repairs.
+### **Page 2 – Analytics Dashboard: Predictive Maintenance Insights**  
+Includes:
+- Machine ID slicer  
+- Date/time slicer  
+- Failure trend  
+- Temperature trend  
+- Vibration trend  
+- Pressure trend  
+- Machine-level failure risk (bar chart)  
+
+**Power BI file:**  
+`dashboards/predictive_maintenance_dashboard.pbix`
+
+---
+
+# Dashboard Screenshots (Week 5)
+
+### KPI Dashboard  
+Shows high-level model performance and summary metrics.
+
+![KPI Dashboard](figures/kpi_dashboard.png)
+
+
+### Analytics Dashboard – Predictive Maintenance Insights  
+Shows detailed sensor trends and machine-level risk.
+
+![Analytics Dashboard](figures/analytics_dashboard.png)
+
+---
+
+## 📌 How to Reproduce
+
+1. Create Azure SQL DB: `predictive_maintenance_db`
+2. Run: `notebooks/04_azure_sql_integration.ipynb`
+3. Open Power BI:
+   - Load `dashboards/predictive_maintenance_dashboard.pbix`
+   - Update connection string if needed
+
+---
+
+## Project Completed  
+This end-to-end workflow demonstrates:
+
+- IoT data simulation  
+- Feature engineering  
+- Machine learning modeling  
+- Cloud SQL deployment (Azure SQL)  
+- Interactive dashboards (Power BI)  
+- Real-world predictive maintenance pipeline  
+
+Perfect for:
+✔ GitHub portfolio  
+✔ Data Science roles  
+✔ ML Engineering roles  
+✔ SQL/Cloud/Power BI positions  
+
+---
