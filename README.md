@@ -115,7 +115,7 @@ Shows detailed sensor trends and machine-level risk.
 
 ---
 
-## 📌 How to Reproduce
+## How to Reproduce
 
 1. Create Azure SQL DB: `predictive_maintenance_db`
 2. Run: `notebooks/04_azure_sql_integration.ipynb`
