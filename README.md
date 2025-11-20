@@ -58,3 +58,13 @@ The following models were trained and evaluated on a held-out test set:
 
 These artifacts will be used in Week 4 for integration with Azure SQL
 and optional deployment steps (API or dashboard).
+
+## Week 5 – Power BI Dashboard (Azure SQL)
+
+- Connected the Azure SQL Database (`predictive_maintenance_db`) directly to Power BI.
+- Built an interactive dashboard showing:
+  - Total machines monitored and predicted failures in the next 72 hours
+  - Failure rate (%) across all sensor readings
+  - Bar chart of upcoming failures by machine
+  - Time-series trends of key sensor signals
+- File: `powerbi/predictive_maintenance_dashboard.pbix`
