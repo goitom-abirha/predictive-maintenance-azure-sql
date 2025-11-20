@@ -134,11 +134,5 @@ This end-to-end workflow demonstrates:
 - Cloud SQL deployment (Azure SQL)  
 - Interactive dashboards (Power BI)  
 - Real-world predictive maintenance pipeline  
-
-Perfect for:
-✔ GitHub portfolio  
-✔ Data Science roles  
-✔ ML Engineering roles  
-✔ SQL/Cloud/Power BI positions  
-
+ 
 ---
