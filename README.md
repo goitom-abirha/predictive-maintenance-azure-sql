@@ -59,12 +59,39 @@ The following models were trained and evaluated on a held-out test set:
 These artifacts will be used in Week 4 for integration with Azure SQL
 and optional deployment steps (API or dashboard).
 
-## Week 5 – Power BI Dashboard (Azure SQL)
+## 5. Azure SQL Integration (Week 4)
 
-- Connected the Azure SQL Database (`predictive_maintenance_db`) directly to Power BI.
-- Built an interactive dashboard showing:
-  - Total machines monitored and predicted failures in the next 72 hours
-  - Failure rate (%) across all sensor readings
-  - Bar chart of upcoming failures by machine
-  - Time-series trends of key sensor signals
-- File: `powerbi/predictive_maintenance_dashboard.pbix`
+Week 4 focused on deploying the engineered dataset to **Azure SQL Database** and establishing
+a cloud-based data pipeline.
+
+### Key actions:
+- Configured Azure SQL server (`goitom-pm-sqlserver`) on East US 2
+- Created database `predictive_maintenance_db`
+- Enabled public endpoint & firewall to allow secure access
+- Created SQL table `SensorFeatures`
+- Wrote ingestion script using `pyodbc` and secure password handling
+- Inserted all engineered features into Azure SQL
+- Verified rows using Azure Query Editor
+
+Notebook:  
+`notebooks/04_azure_sql_ingestion.ipynb`
+
+## 6. Power BI Dashboard (Week 5)
+
+In Week 5, the project connects live Azure SQL data to Power BI to build an
+interactive predictive maintenance dashboard.
+
+### Key visuals:
+- KPI Cards:
+  - Machines monitored
+  - Predicted failures (next 72 hours)
+  - Failure rate (%)
+- Bar chart: failures by machine
+- Line chart: sensor trends over time
+- Slicers: machine, day of week, hour of day
+
+Power BI File:
+`powerbi/predictive_maintenance_dashboard.pbix`
+
+This dashboard allows maintenance teams to monitor risk levels, view real-time
+sensor behavior, and prioritize repairs.
